@@ -14,7 +14,7 @@ pub use map::{AffineMap, MapLoan, RegularMap, TiledMap};
 pub use tiled0::Tiled0;
 pub use tiled1::Tiled1;
 pub use tiled2::Tiled2;
-pub use vram_manager::{DynamicTile, TileFormat, TileIndex, TileSet, VRamManager};
+pub use vram_manager::{DynamicTile, OwnedTileSet, TileFormat, TileIndex, TileSet, VRamManager};
 
 use map::TRANSPARENT_TILE_INDEX;
 

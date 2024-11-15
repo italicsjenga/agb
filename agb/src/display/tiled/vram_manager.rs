@@ -60,6 +60,39 @@ impl<'a> TileSet<'a> {
     fn reference(&self) -> NonNull<[u8]> {
         self.tiles.into()
     }
+
+    pub fn to_owned(&self) -> OwnedTileSet {
+        OwnedTileSet {
+            tiles: self.tiles.to_vec(),
+            format: self.format,
+        }
+    }
+}
+
+pub struct OwnedTileSet {
+    tiles: Vec<u8>,
+    format: TileFormat,
+}
+
+impl OwnedTileSet {
+    pub fn tile_set(&self) -> TileSet<'_> {
+        TileSet {
+            tiles: &self.tiles,
+            format: self.format,
+        }
+    }
+
+    pub fn tiles(&self) -> &[u8] {
+        &self.tiles
+    }
+
+    pub fn tiles_mut(&mut self) -> &mut [u8] {
+        &mut self.tiles
+    }
+
+    pub fn format(&self) -> TileFormat {
+        self.format
+    }
 }
 
 #[derive(Debug, Clone, Copy)]
