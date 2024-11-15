@@ -10,6 +10,8 @@
     any(test, feature = "testing"),
     reexport_test_harness_main = "test_main"
 )]
+#![allow(incomplete_features)]
+#![feature(adt_const_params)]
 #![feature(allocator_api)]
 #![warn(clippy::all)]
 #![allow(clippy::needless_pass_by_ref_mut)]
@@ -181,6 +183,8 @@ mod panics_render;
 /// Simple random number generator
 pub mod rng;
 pub mod save;
+/// Link port support
+pub mod serial_link;
 mod single;
 /// Implements sound output.
 pub mod sound;
