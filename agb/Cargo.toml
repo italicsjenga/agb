@@ -42,11 +42,11 @@ nb = "1.1"
 default-target = "thumbv4t-none-eabi"
 cargo-args = ["-Zbuild-std=core,alloc"]
 
-[profile.dev]
-opt-level = 3
-debug = true
+# [profile.dev]
+# opt-level = 3
+# debug = true
 
-[profile.release]
-opt-level = 3
-lto = "fat"
-debug = true
+# [profile.release]
+# opt-level = 3
+# lto = "fat"
+# debug = true
