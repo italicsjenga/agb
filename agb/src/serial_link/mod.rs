@@ -1,6 +1,6 @@
 use core::ops::{Deref, DerefMut};
 
-use embedded_hal::serial::{Read, Write};
+use embedded_hal_nb::serial::{Read, Write};
 
 use crate::memory_mapped::MemoryMapped;
 
@@ -11,6 +11,14 @@ const RCNT: MemoryMapped<u16> = unsafe { MemoryMapped::new(0x0400_0134) };
 #[derive(Debug)]
 pub enum LinkPortError {
     GbaErrorBit,
+}
+
+impl embedded_hal_nb::serial::Error for LinkPortError {
+    fn kind(&self) -> embedded_hal_nb::serial::ErrorKind {
+        match self {
+            LinkPortError::GbaErrorBit => embedded_hal_nb::serial::ErrorKind::Other,
+        }
+    }
 }
 
 pub struct LinkPortUart;
@@ -29,9 +37,11 @@ impl LinkPortUart {
     }
 }
 
-impl Read<u8> for LinkPortUart {
+impl embedded_hal_nb::serial::ErrorType for LinkPortUart {
     type Error = LinkPortError;
+}
 
+impl Read<u8> for LinkPortUart {
     fn read(&mut self) -> Result<u8, nb::Error<LinkPortError>> {
         match SioControlReg::from(SIOCNT.get()) {
             v if *v.error => Err(nb::Error::Other(LinkPortError::GbaErrorBit)),
@@ -42,8 +52,6 @@ impl Read<u8> for LinkPortUart {
 }
 
 impl Write<u8> for LinkPortUart {
-    type Error = LinkPortError;
-
     fn write(&mut self, word: u8) -> nb::Result<(), Self::Error> {
         match self.flush() {
             Ok(_) => {
